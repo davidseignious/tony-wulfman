@@ -51,16 +51,13 @@ export default async function handler(req, res) {
     }
   }
 
-  const host = req.headers.host || 'tonywulfman.art';
-  const payload = {
+  const payload = new URLSearchParams({
+    _to: PRIMARY_RECIPIENT,
+    _cc: TONY_EMAIL,
     _subject: demo
       ? 'DEMO from David — Tony Wulfman New Website Booking'
       : `New Tony Wulfman Website Booking — ${name}`,
-    _cc: TONY_EMAIL,
-    _template: 'table',
-    _captcha: 'false',
     _replyto: email,
-    _url: `https://${host}/`,
     'Client name': name,
     'Client email': email,
     Phone: phone,
@@ -78,24 +75,24 @@ export default async function handler(req, res) {
       ? `${clean(body.referenceImage.name, 200)} (reference file selected on website)`
       : 'None',
     'Tattoo idea / message': description,
-  };
+  });
 
   try {
-    const response = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(PRIMARY_RECIPIENT)}`, {
+    const response = await fetch('https://flowform.to/submit', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
       },
-      body: JSON.stringify(payload),
+      body: payload.toString(),
+      redirect: 'manual',
     });
 
-    const result = await response.json().catch(() => ({}));
-
-    if (!response.ok || result.success === false) {
+    // FlowForm returns a success redirect/HTML response. Any 2xx or 3xx means it accepted the submission.
+    if (response.status < 200 || response.status >= 400) {
+      const details = await response.text().catch(() => '');
       return res.status(502).json({
-        error: 'The booking delivery service did not accept the request yet.',
-        details: result.message || null,
+        error: 'The booking delivery service did not accept the request.',
+        details: details.slice(0, 300) || null,
       });
     }
 

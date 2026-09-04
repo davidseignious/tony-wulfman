@@ -10,34 +10,26 @@ jobs:
   activate:
     runs-on: ubuntu-latest
     steps:
-      - name: Send activation/demo booking
+      - name: Send live booking delivery demo
         shell: bash
         run: |
           set -euo pipefail
           curl --fail-with-body --silent --show-error \
-            -X POST 'https://formsubmit.co/ajax/ddseign@gmail.com' \
-            -H 'Content-Type: application/json' \
-            -H 'Accept: application/json' \
-            --data-binary @- <<'JSON'
-          {
-            "_subject": "DEMO from David — Tony Wulfman New Website Booking",
-            "_cc": "tonywulfman.art@gmail.com",
-            "_template": "table",
-            "_captcha": "false",
-            "_replyto": "ddseign@gmail.com",
-            "_url": "https://tonywulfman.art/",
-            "Client name": "David — DEMO",
-            "Client email": "ddseign@gmail.com",
-            "Phone": "Demo only",
-            "Style": "Website booking demo",
-            "Placement": "Demo only",
-            "Approximate size": "Demo only",
-            "Budget comfort range": "Demo only",
-            "Preferred date": "Demo",
-            "Preferred time": "Demo",
-            "First tattoo": "No",
-            "18+ confirmed": "Yes",
-            "Appointment-request consent": "Yes",
-            "Tattoo idea / message": "Demo from David for your new website. This was submitted through the booking delivery system to activate and verify the live website booking flow."
-          }
-          JSON
+            -X POST 'https://flowform.to/submit' \
+            --data-urlencode '_to=ddseign@gmail.com' \
+            --data-urlencode '_cc=tonywulfman.art@gmail.com' \
+            --data-urlencode '_subject=DEMO from David — Tony Wulfman New Website Booking' \
+            --data-urlencode '_replyto=ddseign@gmail.com' \
+            --data-urlencode 'Client name=David — DEMO' \
+            --data-urlencode 'Client email=ddseign@gmail.com' \
+            --data-urlencode 'Phone=Demo only' \
+            --data-urlencode 'Style=Website booking demo' \
+            --data-urlencode 'Placement=Demo only' \
+            --data-urlencode 'Approximate size=Demo only' \
+            --data-urlencode 'Budget comfort range=Demo only' \
+            --data-urlencode 'Preferred date=Demo' \
+            --data-urlencode 'Preferred time=Demo' \
+            --data-urlencode 'First tattoo=No' \
+            --data-urlencode '18+ confirmed=Yes' \
+            --data-urlencode 'Appointment-request consent=Yes' \
+            --data-urlencode 'Tattoo idea / message=Demo from David for your new website. This was submitted through the booking delivery system to verify the live website booking flow.'

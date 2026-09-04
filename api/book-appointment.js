@@ -51,6 +51,14 @@ function addMinutesToLocalDateTime(date, time, minutesToAdd) {
   return `${adjusted.getUTCFullYear()}-${pad(adjusted.getUTCMonth() + 1)}-${pad(adjusted.getUTCDate())}T${pad(adjusted.getUTCHours())}:${pad(adjusted.getUTCMinutes())}:00`;
 }
 
+function withTimeout(promise, ms, label) {
+  let timer;
+  const timeout = new Promise((_, reject) => {
+    timer = setTimeout(() => reject(new Error(`${label} timed out`)), ms);
+  });
+  return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
+}
+
 function validateReference(referenceImage) {
   if (!referenceImage) return { attachment: null, error: null };
 
@@ -78,8 +86,6 @@ function validateReference(referenceImage) {
 }
 
 export default async function handler(req, res) {
-  // Safe production verification: confirms the function is reachable without
-  // sending email, creating calendar events, or submitting a fake appointment.
   if (req.method === 'GET' && req.query?.health === '1') {
     return res.status(200).json({ success: true, service: 'tony-booking', mode: 'health' });
   }
@@ -135,6 +141,9 @@ export default async function handler(req, res) {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: { user: gmailUser, pass: gmailPassword },
+      connectionTimeout: 3000,
+      greetingTimeout: 3000,
+      socketTimeout: 5000,
     });
 
     const safe = {
@@ -184,14 +193,18 @@ export default async function handler(req, res) {
         </div>
       </div>`;
 
-    await transporter.sendMail({
-      from: `Tony Wulfman Website <${gmailUser}>`,
-      to: TONY_EMAIL,
-      replyTo: email,
-      subject: `Appointment request — ${name} — ${formatDate(date)}`,
-      html: tonyEmailHtml,
-      attachments: attachment ? [attachment] : [],
-    });
+    await withTimeout(
+      transporter.sendMail({
+        from: `Tony Wulfman Website <${gmailUser}>`,
+        to: TONY_EMAIL,
+        replyTo: email,
+        subject: `Appointment request — ${name} — ${formatDate(date)}`,
+        html: tonyEmailHtml,
+        attachments: attachment ? [attachment] : [],
+      }),
+      5000,
+      'Appointment email',
+    );
 
     const clientEmailHtml = `
       <div style="font-family:Arial,sans-serif;max-width:640px;margin:0 auto;color:#161412">
@@ -213,23 +226,23 @@ export default async function handler(req, res) {
         </div>
       </div>`;
 
-    let confirmationEmailSent = true;
-    try {
-      await transporter.sendMail({
-        from: `Tony Wulfman <${gmailUser}>`,
-        to: email,
-        replyTo: TONY_EMAIL,
-        subject: 'Tony Wulfman — appointment request received',
-        html: clientEmailHtml,
-      });
-    } catch (confirmationError) {
-      confirmationEmailSent = false;
-      console.error('Client confirmation email failed:', confirmationError.message);
-    }
+    const optionalTasks = [
+      withTimeout(
+        transporter.sendMail({
+          from: `Tony Wulfman <${gmailUser}>`,
+          to: email,
+          replyTo: TONY_EMAIL,
+          subject: 'Tony Wulfman — appointment request received',
+          html: clientEmailHtml,
+        }),
+        2500,
+        'Confirmation email',
+      ),
+    ];
 
     if (calendarApi) {
-      try {
-        await calendarApi.events.insert({
+      optionalTasks.push(withTimeout(
+        calendarApi.events.insert({
           calendarId: process.env.CALENDAR_ID || 'primary',
           resource: {
             summary: `Tentative tattoo request: ${name}`,
@@ -245,15 +258,28 @@ export default async function handler(req, res) {
             end: { dateTime: addMinutesToLocalDateTime(date, time, 60), timeZone: 'America/Chicago' },
           },
           sendUpdates: 'none',
-        });
-      } catch (calendarError) {
-        console.error('Calendar event creation skipped:', calendarError.message);
-      }
+        }),
+        2500,
+        'Calendar update',
+      ));
     }
+
+    const optionalResults = await Promise.allSettled(optionalTasks);
+    const confirmationEmailSent = optionalResults[0]?.status === 'fulfilled';
+    optionalResults.forEach((result, index) => {
+      if (result.status === 'rejected') {
+        console.error(index === 0 ? 'Client confirmation email skipped:' : 'Calendar event creation skipped:', result.reason?.message || result.reason);
+      }
+    });
 
     return res.status(200).json({ success: true, confirmationEmailSent, message: 'Appointment request submitted' });
   } catch (error) {
     console.error('Booking error:', error);
-    return res.status(500).json({ error: 'Failed to process appointment. Please email Tony directly.' });
+    const timedOut = /timed out/i.test(error?.message || '');
+    return res.status(timedOut ? 504 : 500).json({
+      error: timedOut
+        ? 'Booking email took too long. Please email Tony directly so your request is not lost.'
+        : 'Failed to process appointment. Please email Tony directly.',
+    });
   }
 }

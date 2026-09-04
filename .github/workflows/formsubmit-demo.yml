@@ -1,4 +1,4 @@
-name: Activate Booking Delivery
+name: Verify Live Booking Link
 
 on:
   push:
@@ -7,29 +7,24 @@ on:
       - '.github/workflows/formsubmit-demo.yml'
 
 jobs:
-  activate:
+  verify:
     runs-on: ubuntu-latest
     steps:
-      - name: Send live booking delivery demo
+      - name: Hit the real Vercel booking endpoint
         shell: bash
         run: |
           set -euo pipefail
-          curl --fail-with-body --silent --show-error \
-            -X POST 'https://flowform.to/submit' \
-            --data-urlencode '_to=ddseign@gmail.com' \
-            --data-urlencode '_cc=tonywulfman.art@gmail.com' \
-            --data-urlencode '_subject=DEMO from David — Tony Wulfman New Website Booking' \
-            --data-urlencode '_replyto=ddseign@gmail.com' \
-            --data-urlencode 'Client name=David — DEMO' \
-            --data-urlencode 'Client email=ddseign@gmail.com' \
-            --data-urlencode 'Phone=Demo only' \
-            --data-urlencode 'Style=Website booking demo' \
-            --data-urlencode 'Placement=Demo only' \
-            --data-urlencode 'Approximate size=Demo only' \
-            --data-urlencode 'Budget comfort range=Demo only' \
-            --data-urlencode 'Preferred date=Demo' \
-            --data-urlencode 'Preferred time=Demo' \
-            --data-urlencode 'First tattoo=No' \
-            --data-urlencode '18+ confirmed=Yes' \
-            --data-urlencode 'Appointment-request consent=Yes' \
-            --data-urlencode 'Tattoo idea / message=Demo from David for your new website. This was submitted through the booking delivery system to verify the live website booking flow.'
+          URL='https://tony-wulfman-booking-flow-ewtxjav7p-ai-company4.vercel.app/api/book?demo=1'
+          for attempt in $(seq 1 24); do
+            echo "Attempt ${attempt}"
+            code=$(curl --silent --show-error --location --output response.txt --write-out '%{http_code}' "$URL" || true)
+            cat response.txt || true
+            echo
+            if [ "$code" = "200" ] && grep -q '"success":true' response.txt; then
+              echo 'Live booking endpoint verified.'
+              exit 0
+            fi
+            sleep 5
+          done
+          echo 'Live booking endpoint did not become ready in time.'
+          exit 1

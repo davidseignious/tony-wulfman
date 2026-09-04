@@ -1,6 +1,8 @@
 import Head from 'next/head';
 import Portfolio from '../components/Portfolio';
 
+const BOOKING_URL = 'https://venue.ink/@tonywulfmanart/bookings';
+
 const SPECIALTIES = [
   'Geometric and symmetrical work',
   'Fine line and detail',
@@ -17,7 +19,7 @@ const FAQS = [
   },
   {
     question: 'How do I get a quote?',
-    answer: 'Reach out with the idea, placement, approximate size, budget comfort range and any reference image you have. Tony can review the scope before a session is confirmed.',
+    answer: 'Use Tony’s Venue Ink booking page to share the details of your tattoo request. Tony can review the scope before a session is confirmed.',
   },
   {
     question: 'Do you take cover-ups and reworks?',
@@ -40,7 +42,7 @@ const personSchema = {
   jobTitle: 'Tattoo Artist',
   url: 'https://tonywulfman.art',
   email: 'mailto:tonywulfman.art@gmail.com',
-  sameAs: ['https://www.instagram.com/tonywulfman.art/'],
+  sameAs: ['https://www.instagram.com/tonywulfman.art/', 'https://venue.ink/@tonywulfmanart/bookings'],
   worksFor: {
     '@type': 'TattooParlor',
     name: 'Old Town Tatu',
@@ -112,9 +114,10 @@ export default function Home() {
               <span className="font-display text-lg tracking-wide text-bone">Tony Wulfman</span>
             </a>
             <div className="flex items-center gap-6 text-sm">
-              <a href="#work" className="text-stone hover:text-bone focus:outline-none focus-visible:text-brass">Work</a>
+              <a href="#work" className="hidden text-stone hover:text-bone focus:outline-none focus-visible:text-brass sm:inline">Work</a>
               <a href="#about" className="hidden text-stone hover:text-bone focus:outline-none focus-visible:text-brass sm:inline">About</a>
               <a href="#faq" className="hidden text-stone hover:text-bone focus:outline-none focus-visible:text-brass md:inline">FAQ</a>
+              <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="bg-brass px-4 py-2 text-ink hover:bg-bone focus:outline-none focus-visible:ring-2 focus-visible:ring-bone">Book</a>
             </div>
           </div>
         </nav>
@@ -128,7 +131,8 @@ export default function Home() {
                 <p className="mt-7 max-w-xl font-display text-3xl leading-tight text-ink/70 sm:text-4xl">Precision, composition and detail built around the person wearing the piece.</p>
                 <p className="mt-7 max-w-xl leading-relaxed text-ink/60">Tony tattoos at Old Town Tatu in Chicago, working across geometric and symmetrical designs, fine line, portrait and realism, floral and nature, bold blackwork, and cover-ups or reworks.</p>
                 <div className="mt-9 flex flex-wrap gap-3">
-                  <a href="#work" className="bg-ink px-7 py-3.5 text-bone hover:bg-brass hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-brass">See selected work</a>
+                  <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="bg-ink px-7 py-3.5 text-bone hover:bg-brass hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-brass">Book with Tony</a>
+                  <a href="#work" className="border border-ink/25 px-7 py-3.5 hover:border-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-ink">See selected work</a>
                 </div>
               </div>
               <div className="flex justify-center md:justify-end">
@@ -188,6 +192,7 @@ export default function Home() {
                   <p className="text-sm tracking-[0.08em] text-bone">CUSTOM QUOTES ARE DISCUSSED DURING CONSULTATION.</p>
                   <p className="mt-3 text-xs leading-relaxed text-stone">No fixed minimum, hourly rate or deposit amount is published here until Tony confirms those details.</p>
                 </div>
+                <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="mt-8 inline-flex bg-brass px-6 py-3 text-sm font-medium text-ink hover:bg-bone focus:outline-none focus-visible:ring-2 focus-visible:ring-bone">Book through Venue Ink</a>
               </div>
             </div>
           </section>
@@ -228,6 +233,7 @@ export default function Home() {
               <p className="text-bone">Contact</p>
               <a href="mailto:tonywulfman.art@gmail.com" className="mt-2 block break-all text-sm text-stone hover:text-brass">tonywulfman.art@gmail.com</a>
               <a href="https://www.instagram.com/tonywulfman.art/" target="_blank" rel="noopener noreferrer" className="mt-2 block text-sm text-stone hover:text-brass">@tonywulfman.art</a>
+              <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="mt-2 block text-sm text-brass hover:text-bone">Book on Venue Ink</a>
             </div>
             <div>
               <p className="text-bone">Age requirement</p>

@@ -1,0 +1,43 @@
+name: Activate Booking Delivery
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/formsubmit-demo.yml'
+
+jobs:
+  activate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send activation/demo booking
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail-with-body --silent --show-error \
+            -X POST 'https://formsubmit.co/ajax/ddseign@gmail.com' \
+            -H 'Content-Type: application/json' \
+            -H 'Accept: application/json' \
+            --data-binary @- <<'JSON'
+          {
+            "_subject": "DEMO from David — Tony Wulfman New Website Booking",
+            "_cc": "tonywulfman.art@gmail.com",
+            "_template": "table",
+            "_captcha": "false",
+            "_replyto": "ddseign@gmail.com",
+            "_url": "https://tonywulfman.art/",
+            "Client name": "David — DEMO",
+            "Client email": "ddseign@gmail.com",
+            "Phone": "Demo only",
+            "Style": "Website booking demo",
+            "Placement": "Demo only",
+            "Approximate size": "Demo only",
+            "Budget comfort range": "Demo only",
+            "Preferred date": "Demo",
+            "Preferred time": "Demo",
+            "First tattoo": "No",
+            "18+ confirmed": "Yes",
+            "Appointment-request consent": "Yes",
+            "Tattoo idea / message": "Demo from David for your new website. This was submitted through the booking delivery system to activate and verify the live website booking flow."
+          }
+          JSON

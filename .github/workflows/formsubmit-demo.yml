@@ -4,27 +4,30 @@ on:
   push:
     branches: [main]
     paths:
+      - 'api/book-appointment.js'
+      - 'components/BookingForm.js'
       - '.github/workflows/formsubmit-demo.yml'
+  workflow_dispatch:
 
 jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
-      - name: Hit the real Vercel booking endpoint
+      - name: Verify the real booking function without submitting an appointment
         shell: bash
         run: |
           set -euo pipefail
-          URL='https://tony-wulfman-booking-flow-ewtxjav7p-ai-company4.vercel.app/api/book?demo=1'
-          for attempt in $(seq 1 24); do
-            echo "Attempt ${attempt}"
-            code=$(curl --silent --show-error --location --output response.txt --write-out '%{http_code}' "$URL" || true)
+          URL='https://tonywulfman.art/api/book-appointment?health=1'
+          for attempt in $(seq 1 36); do
+            echo "Attempt ${attempt}: ${URL}"
+            code=$(curl --silent --show-error --location --connect-timeout 10 --max-time 20 --output response.txt --write-out '%{http_code}' "$URL" || true)
             cat response.txt || true
             echo
-            if [ "$code" = "200" ] && grep -q '"success":true' response.txt; then
-              echo 'Live booking endpoint verified.'
+            if [ "$code" = "200" ] && grep -q '"success":true' response.txt && grep -q '"service":"tony-booking"' response.txt; then
+              echo 'Live Tony booking endpoint verified safely.'
               exit 0
             fi
-            sleep 5
+            sleep 10
           done
-          echo 'Live booking endpoint did not become ready in time.'
+          echo 'The live Tony booking endpoint did not become ready in time.'
           exit 1

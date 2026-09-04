@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import Portfolio from '../components/Portfolio';
-import BookingForm from '../components/BookingForm';
 
 const SPECIALTIES = [
   'Geometric and symmetrical work',
@@ -18,15 +17,7 @@ const FAQS = [
   },
   {
     question: 'How do I get a quote?',
-    answer: 'Send the idea, placement, approximate size, budget comfort range and any reference image you have. Tony can review the scope before a session is confirmed.',
-  },
-  {
-    question: 'Is my preferred date guaranteed?',
-    answer: 'No. The form sends a request, not a confirmed appointment. Tony will confirm availability directly before anything is locked in.',
-  },
-  {
-    question: 'Can I send reference images?',
-    answer: 'Yes. The booking form accepts one JPG, PNG, or WebP image up to 2 MB and attaches it to the request Tony receives.',
+    answer: 'Reach out with the idea, placement, approximate size, budget comfort range and any reference image you have. Tony can review the scope before a session is confirmed.',
   },
   {
     question: 'Do you take cover-ups and reworks?',
@@ -34,11 +25,7 @@ const FAQS = [
   },
   {
     question: 'What if this is my first tattoo?',
-    answer: 'Mark the first-tattoo box in the request so Tony has that context. Ask about preparation, placement, pacing or anything else before confirming.',
-  },
-  {
-    question: 'What should I do after my tattoo?',
-    answer: 'Follow Tony’s specific bandage and aftercare directions first. Keep the area clean, avoid soaking or swimming while it heals, do not pick or scratch, and protect healed tattooed skin from the sun. If redness spreads, pain worsens, pus develops, or you have fever or chills, contact a healthcare professional promptly.',
+    answer: 'Mention that it is your first tattoo when you reach out so Tony has that context. You can ask questions about placement, pacing or anything else before confirming.',
   },
   {
     question: 'What are Tony’s rate, minimum and deposit?',
@@ -105,11 +92,11 @@ export default function Home() {
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://tonywulfman.art/" />
         <meta property="og:title" content="Tony Wulfman — Tattoo Artist in Chicago" />
-        <meta property="og:description" content="Selected tattoo work, session information, aftercare and appointment requests for Tony Wulfman at Old Town Tatu in Chicago." />
+        <meta property="og:description" content="Selected tattoo work, specialties and studio information for Tony Wulfman at Old Town Tatu in Chicago." />
         <meta property="og:image" content="https://tonywulfman.art/tony-wulfman-logo.png" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Tony Wulfman — Tattoo Artist in Chicago" />
-        <meta name="twitter:description" content="Selected tattoo work and appointment requests for Tony Wulfman at Old Town Tatu in Chicago." />
+        <meta name="twitter:description" content="Selected tattoo work and studio information for Tony Wulfman at Old Town Tatu in Chicago." />
         <meta name="twitter:image" content="https://tonywulfman.art/tony-wulfman-logo.png" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(shopSchema) }} />
@@ -125,11 +112,9 @@ export default function Home() {
               <span className="font-display text-lg tracking-wide text-bone">Tony Wulfman</span>
             </a>
             <div className="flex items-center gap-6 text-sm">
-              <a href="#work" className="hidden text-stone hover:text-bone focus:outline-none focus-visible:text-brass sm:inline">Work</a>
+              <a href="#work" className="text-stone hover:text-bone focus:outline-none focus-visible:text-brass">Work</a>
               <a href="#about" className="hidden text-stone hover:text-bone focus:outline-none focus-visible:text-brass sm:inline">About</a>
-              <a href="#aftercare" className="hidden text-stone hover:text-bone focus:outline-none focus-visible:text-brass lg:inline">Aftercare</a>
               <a href="#faq" className="hidden text-stone hover:text-bone focus:outline-none focus-visible:text-brass md:inline">FAQ</a>
-              <a href="#book" className="bg-brass px-4 py-2 text-ink hover:bg-bone focus:outline-none focus-visible:ring-2 focus-visible:ring-bone">Book</a>
             </div>
           </div>
         </nav>
@@ -143,8 +128,7 @@ export default function Home() {
                 <p className="mt-7 max-w-xl font-display text-3xl leading-tight text-ink/70 sm:text-4xl">Precision, composition and detail built around the person wearing the piece.</p>
                 <p className="mt-7 max-w-xl leading-relaxed text-ink/60">Tony tattoos at Old Town Tatu in Chicago, working across geometric and symmetrical designs, fine line, portrait and realism, floral and nature, bold blackwork, and cover-ups or reworks.</p>
                 <div className="mt-9 flex flex-wrap gap-3">
-                  <a href="#book" className="bg-ink px-7 py-3.5 text-bone hover:bg-brass hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-brass">Request an appointment</a>
-                  <a href="#work" className="border border-ink/25 px-7 py-3.5 hover:border-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-ink">See selected work</a>
+                  <a href="#work" className="bg-ink px-7 py-3.5 text-bone hover:bg-brass hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-brass">See selected work</a>
                 </div>
               </div>
               <div className="flex justify-center md:justify-end">
@@ -184,49 +168,6 @@ export default function Home() {
             </div>
           </section>
 
-          <section className="mx-auto max-w-6xl px-6 py-20 sm:py-24" aria-labelledby="before-book-title">
-            <SectionHeading id="before-book-title" intro="A few things to know before you send a request.">Before you book</SectionHeading>
-            <div className="mt-10 grid gap-px border border-stone/15 bg-stone/15 md:grid-cols-3">
-              <article className="bg-ink p-7">
-                <p className="font-display text-3xl text-bone">18+ only</p>
-                <p className="mt-4 leading-relaxed text-stone">Illinois prohibits tattooing anyone under 18. Bring a current government-issued photo ID showing your birth date and photograph.</p>
-              </article>
-              <article className="bg-ink p-7">
-                <p className="font-display text-3xl text-bone">Request, not reservation</p>
-                <p className="mt-4 leading-relaxed text-stone">Submitting the form starts the conversation. Your preferred date is not reserved until Tony confirms the project and availability directly.</p>
-              </article>
-              <article className="bg-ink p-7">
-                <p className="font-display text-3xl text-bone">First tattoo?</p>
-                <p className="mt-4 leading-relaxed text-stone">Say so in the form. There is space to ask questions about placement, preparation, pacing and what the session will feel like.</p>
-              </article>
-            </div>
-          </section>
-
-          <section className="border-y border-stone/15 bg-char" aria-labelledby="prep-title">
-            <div className="mx-auto max-w-6xl px-6 py-20 sm:py-24">
-              <SectionHeading id="prep-title" intro="Arriving rested and prepared makes the appointment easier for both you and the artist.">Before your session</SectionHeading>
-              <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-                <div className="border-t border-brass pt-5">
-                  <h3 className="font-display text-2xl text-bone">Eat + hydrate</h3>
-                  <p className="mt-3 leading-relaxed text-stone">Have a normal meal and drink water before the appointment. For longer work, bring a simple snack and something to drink.</p>
-                </div>
-                <div className="border-t border-brass pt-5">
-                  <h3 className="font-display text-2xl text-bone">Wear for access</h3>
-                  <p className="mt-3 leading-relaxed text-stone">Choose clean, comfortable clothing that gives easy access to the placement and that you would not be upset to stain.</p>
-                </div>
-                <div className="border-t border-brass pt-5">
-                  <h3 className="font-display text-2xl text-bone">Bring your ID</h3>
-                  <p className="mt-3 leading-relaxed text-stone">Bring your current government-issued photo ID. The site and request form are for clients age 18 and older.</p>
-                </div>
-                <div className="border-t border-brass pt-5">
-                  <h3 className="font-display text-2xl text-bone">Check the skin</h3>
-                  <p className="mt-3 leading-relaxed text-stone">If the area is sunburned, has a rash, an open wound or another issue that may affect tattooing, contact Tony before the session.</p>
-                </div>
-              </div>
-              <p className="mt-10 max-w-3xl border-l-2 border-stone/30 pl-5 text-sm leading-relaxed text-stone">If you have a health concern that could affect tattooing or healing, ask an appropriate healthcare professional and tell Tony about any practical accommodation that may matter. Do not stop or change prescribed medication solely for a tattoo without guidance from the prescriber.</p>
-            </div>
-          </section>
-
           <section id="pricing" className="mx-auto max-w-6xl px-6 py-20 sm:py-24" aria-labelledby="pricing-title">
             <div className="grid gap-12 lg:grid-cols-[.82fr_1.18fr] lg:items-start">
               <div>
@@ -251,47 +192,13 @@ export default function Home() {
             </div>
           </section>
 
-          <section id="aftercare" className="border-y border-stone/15 bg-char" aria-labelledby="aftercare-title">
-            <div className="mx-auto max-w-6xl px-6 py-20 sm:py-24">
-              <SectionHeading id="aftercare-title" intro="Tony’s instructions for your specific bandage and tattoo come first. These are general healing basics to keep handy.">Aftercare</SectionHeading>
-              <div className="mt-10 grid gap-px border border-stone/15 bg-stone/15 md:grid-cols-2 lg:grid-cols-4">
-                <article className="bg-char p-7">
-                  <span className="font-display text-4xl text-brass">01</span>
-                  <h3 className="mt-5 font-display text-2xl text-bone">Follow the bandage plan</h3>
-                  <p className="mt-3 leading-relaxed text-stone">Different dressings have different timelines. Follow the instructions Tony gives you for the bandage used on your tattoo.</p>
-                </article>
-                <article className="bg-char p-7">
-                  <span className="font-display text-4xl text-brass">02</span>
-                  <h3 className="mt-5 font-display text-2xl text-bone">Keep it clean</h3>
-                  <p className="mt-3 leading-relaxed text-stone">Wash gently with clean hands as directed, then pat dry. Avoid harsh rubbing and unnecessary handling while the skin is healing.</p>
-                </article>
-                <article className="bg-char p-7">
-                  <span className="font-display text-4xl text-brass">03</span>
-                  <h3 className="mt-5 font-display text-2xl text-bone">Let it heal</h3>
-                  <p className="mt-3 leading-relaxed text-stone">Avoid soaking, swimming, picking, scratching and heavy friction while it heals. Keep fresh tattooed skin out of direct sun.</p>
-                </article>
-                <article className="bg-char p-7">
-                  <span className="font-display text-4xl text-brass">04</span>
-                  <h3 className="mt-5 font-display text-2xl text-bone">Protect it long-term</h3>
-                  <p className="mt-3 leading-relaxed text-stone">Once the tattoo is fully healed, protect exposed tattooed skin with broad-spectrum SPF 30+ sunscreen when outdoors.</p>
-                </article>
-              </div>
-              <div className="mt-8 border-l-2 border-brass bg-ink p-5">
-                <p className="font-medium text-bone">Know when to get medical help.</p>
-                <p className="mt-2 max-w-4xl text-sm leading-relaxed text-stone">If redness spreads or darkens instead of improving, pain worsens, pus or open sores develop, or you have fever or chills, contact an appropriate healthcare professional promptly. For an emergency, seek emergency care.</p>
-              </div>
-            </div>
-          </section>
-
           <section className="mx-auto max-w-4xl px-6 py-20 text-center sm:py-24" aria-label="Client review">
             <p className="font-display text-3xl italic leading-snug text-bone sm:text-4xl">“He didn’t rush… he took his time with his work… his line work is spectacular.”</p>
             <p className="mt-5 text-sm text-stone">Amanda S. · client review published by Old Town Tatu</p>
           </section>
 
-          <BookingForm />
-
           <section id="faq" className="mx-auto max-w-4xl px-6 py-20 sm:py-24" aria-labelledby="faq-title">
-            <SectionHeading id="faq-title" intro="The practical questions people usually want answered before they send a request.">Frequently asked</SectionHeading>
+            <SectionHeading id="faq-title" intro="A few practical questions about Tony’s work and process.">Frequently asked</SectionHeading>
             <div className="mt-9 border-y border-stone/20">
               {FAQS.map((item) => (
                 <details key={item.question} className="group border-b border-stone/15 last:border-b-0">

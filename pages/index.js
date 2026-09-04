@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Portfolio from '../components/Portfolio';
 
-const BOOKING_URL = 'https://venue.ink/@tonywulfmanart/bookings';
+const BOOKING_URL = 'https://venue.ink/@tonywulfmanart';
 
 const SPECIALTIES = [
   'Geometric and symmetrical work',
@@ -42,7 +42,7 @@ const personSchema = {
   jobTitle: 'Tattoo Artist',
   url: 'https://tonywulfman.art',
   email: 'mailto:tonywulfman.art@gmail.com',
-  sameAs: ['https://www.instagram.com/tonywulfman.art/', 'https://venue.ink/@tonywulfmanart/bookings'],
+  sameAs: ['https://www.instagram.com/tonywulfman.art/', 'https://venue.ink/@tonywulfmanart'],
   worksFor: {
     '@type': 'TattooParlor',
     name: 'Old Town Tatu',

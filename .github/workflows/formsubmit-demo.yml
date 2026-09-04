@@ -18,16 +18,17 @@ jobs:
         run: |
           set -euo pipefail
           URL='https://tonywulfman.art/api/book-appointment?health=1'
-          for attempt in $(seq 1 36); do
+          for attempt in 1 2 3; do
             echo "Attempt ${attempt}: ${URL}"
-            code=$(curl --silent --show-error --location --connect-timeout 10 --max-time 20 --output response.txt --write-out '%{http_code}' "$URL" || true)
-            cat response.txt || true
+            rm -f response.txt
+            code=$(curl --silent --show-error --location --connect-timeout 5 --max-time 8 --output response.txt --write-out '%{http_code}' "$URL" || true)
+            cat response.txt 2>/dev/null || true
             echo
-            if [ "$code" = "200" ] && grep -q '"success":true' response.txt && grep -q '"service":"tony-booking"' response.txt; then
+            if [ "$code" = "200" ] && grep -q '"success":true' response.txt 2>/dev/null && grep -q '"service":"tony-booking"' response.txt 2>/dev/null; then
               echo 'Live Tony booking endpoint verified safely.'
               exit 0
             fi
-            sleep 10
+            [ "$attempt" = "3" ] || sleep 3
           done
-          echo 'The live Tony booking endpoint did not become ready in time.'
+          echo 'Live booking endpoint is not healthy yet. This check now fails quickly instead of timing out.'
           exit 1

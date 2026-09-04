@@ -1,21 +1,17 @@
 module.exports = {
-  content: [
-    './pages/**/*.{js,jsx}',
-    './components/**/*.{js,jsx}',
-  ],
+  content: ['./pages/**/*.{js,jsx}', './components/**/*.{js,jsx}'],
   theme: {
     extend: {
       colors: {
-        slate: {
-          950: '#0a0a0a',
-          900: '#0f172a',
-          800: '#1e293b',
-          700: '#334155',
-        },
-        amber: {
-          500: '#f59e0b',
-          400: '#fbbf24',
-        },
+        ink:    '#0C0B0A',
+        char:   '#161412',
+        bone:   '#E8E4DC',
+        stone:  '#8A837B',
+        brass:  '#B08D57',
+      },
+      fontFamily: {
+        display: ['Cormorant Garamond', 'Georgia', 'serif'],
+        body:    ['Inter', 'system-ui', 'sans-serif'],
       },
     },
   },

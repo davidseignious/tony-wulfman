@@ -1,307 +1,229 @@
 import React, { useState } from 'react';
-import Image from 'next/image';
 import Head from 'next/head';
 
+const WORK = [
+  { file: 'work-1.jpg', label: 'Geometric' },
+  { file: 'work-2.jpg', label: 'Fine line' },
+  { file: 'work-3.jpg', label: 'Portrait' },
+  { file: 'work-4.jpg', label: 'Blackwork' },
+  { file: 'work-5.jpg', label: 'Floral' },
+  { file: 'work-6.jpg', label: 'Sleeve' },
+  { file: 'work-7.jpg', label: 'Geometric' },
+  { file: 'work-8.jpg', label: 'Fine line' },
+  { file: 'work-9.jpg', label: 'Blackwork' },
+];
+
+function Tile({ file, label }) {
+  const [failed, setFailed] = useState(false);
+  if (failed) {
+    return (
+      <div className="aspect-[4/5] bg-char border border-stone/15 flex items-center justify-center">
+        <span className="font-body text-xs text-stone">{label}</span>
+      </div>
+    );
+  }
+  return (
+    <figure className="aspect-[4/5] overflow-hidden bg-char">
+      <img
+        src={`/work/${file}`}
+        alt={`${label} tattoo by Tony Wulfman`}
+        onError={() => setFailed(true)}
+        className="w-full h-full object-cover"
+        loading="lazy"
+      />
+    </figure>
+  );
+}
+
 export default function Home() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    date: '',
-    time: '',
-    description: ''
-  });
+  const [form, setForm] = useState({ name: '', email: '', phone: '', date: '', time: '', description: '' });
+  const [sent, setSent] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState('');
 
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const change = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e) => {
+  const submit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    setBusy(true); setErr('');
     try {
-      const response = await fetch('/api/book-appointment', {
+      const r = await fetch('/api/book-appointment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(form),
       });
-      if (response.ok) {
-        setSubmitted(true);
-        setFormData({ name: '', email: '', phone: '', date: '', time: '', description: '' });
-        setTimeout(() => setSubmitted(false), 5000);
-      }
-    } catch (error) {
-      console.error('Error:', error);
+      if (!r.ok) throw new Error('That did not go through. Email tonywulfman.art@gmail.com instead.');
+      setSent(true);
+      setForm({ name: '', email: '', phone: '', date: '', time: '', description: '' });
+    } catch (e2) {
+      setErr(e2.message);
+    } finally {
+      setBusy(false);
     }
-    setLoading(false);
   };
+
+  const field = 'w-full bg-ink border border-stone/25 px-4 py-3 font-body text-bone placeholder-stone focus:border-brass focus:outline-none focus:ring-1 focus:ring-brass transition-colors';
 
   return (
     <>
       <Head>
-        <title>Tony Wulfman | Tattoo Artist | Old Town Tatu Chicago</title>
-        <meta name="description" content="Professional tattoo artist specializing in geometric patterns, fine-line work, and custom designs at Old Town Tatu, Chicago." />
+        <title>Tony Wulfman — Tattoo Artist, Old Town Tatu Chicago</title>
+        <meta name="description" content="Geometric, fine-line and blackwork tattooing by Tony Wulfman at Old Town Tatu in Chicago. Free consultations." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      {/* Navigation */}
-      <nav className="fixed w-full bg-black z-50 border-b border-gray-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
-          <div className="relative w-10 h-10 flex-shrink-0">
-            <Image
-              src="/tony-wulfman-logo.png"
-              alt="Tony Wulfman"
-              fill
-              className="object-contain"
-              sizes="40px"
-            />
-          </div>
-          <h1 className="text-white text-lg font-light tracking-widest">TONY WULFMAN</h1>
-          <a href="#book" className="text-white text-sm border border-white px-4 py-2 hover:bg-white hover:text-black transition">
-            BOOK
-          </a>
-        </div>
-      </nav>
+      <div className="min-h-screen bg-ink font-body">
 
-      {/* Hero */}
-      <section className="pt-24 pb-16 bg-black text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div className="relative h-80 sm:h-96">
-              <Image
-                src="/tony-wulfman-logo.png"
-                alt="Tony Wulfman - Tattoo Artist"
-                fill
-                className="object-contain"
-                priority
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
+        <nav className="sticky top-0 z-50 bg-ink/95 backdrop-blur border-b border-stone/15">
+          <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="#top" className="flex items-center gap-3">
+              <img src="/tony-wulfman-logo.png" alt="" className="h-9 w-9 object-contain invert" />
+              <span className="font-display text-lg tracking-wide text-bone">Tony Wulfman</span>
+            </a>
+            <div className="flex items-center gap-7 text-sm">
+              <a href="#work" className="text-stone hover:text-bone transition-colors hidden sm:inline">Work</a>
+              <a href="#about" className="text-stone hover:text-bone transition-colors hidden sm:inline">About</a>
+              <a href="#book" className="text-ink bg-brass px-4 py-2 hover:bg-bone transition-colors">Book</a>
             </div>
+          </div>
+        </nav>
+
+        {/* Hero — inverted to bone. The one bold move on the page. */}
+        <header id="top" className="bg-bone text-ink">
+          <div className="max-w-5xl mx-auto px-6 py-20 sm:py-28 grid md:grid-cols-[1.1fr_1fr] gap-12 items-center">
             <div>
-              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-light mb-4 tracking-wider">
-                GEOMETRIC TATTOOS
-              </h2>
-              <p className="text-base sm:text-lg text-gray-300 mb-8 leading-relaxed">
-                Fine line work. Bold black. Custom designs. Each piece is custom-designed to match your vision perfectly and crafted to be a masterpiece on your skin.
+              <h1 className="font-display font-light leading-[0.92] text-6xl sm:text-7xl md:text-8xl">
+                Tony<br />Wulfman
+              </h1>
+              <p className="font-display text-2xl sm:text-3xl mt-6 text-ink/70 leading-snug max-w-md">
+                Geometric, fine-line and blackwork tattooing at Old Town Tatu, Chicago.
               </p>
-              <p className="text-sm text-gray-400 mb-8">
-                Established 2020 • 15+ Years Professional Design Experience
+              <p className="mt-8 text-ink/60 max-w-md leading-relaxed">
+                Fifteen years of design behind every piece. Consultations are free, and every
+                design is drawn for one person only.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <a href="#portfolio" className="bg-white text-black px-8 py-3 font-medium text-center hover:bg-gray-200 transition">
-                  View Work
+              <div className="mt-10 flex flex-wrap gap-3">
+                <a href="#book" className="bg-ink text-bone px-7 py-3 hover:bg-brass hover:text-ink transition-colors">
+                  Request an appointment
                 </a>
-                <a href="#book" className="border-2 border-white text-white px-8 py-3 font-medium text-center hover:bg-white hover:text-black transition">
-                  Book Now
+                <a href="#work" className="border border-ink/30 px-7 py-3 hover:border-ink transition-colors">
+                  See the work
                 </a>
               </div>
             </div>
+            <div className="flex justify-center md:justify-end">
+              <img
+                src="/tony-wulfman-logo.png"
+                alt="Tony Wulfman crest — a face split between marble statue and wolf, framed by laurel"
+                className="w-full max-w-xs md:max-w-sm object-contain mix-blend-multiply"
+              />
+            </div>
           </div>
-        </div>
-      </section>
+        </header>
 
-      {/* About Section */}
-      <section className="py-16 sm:py-20 bg-gray-950 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h3 className="text-3xl sm:text-4xl font-light tracking-wider mb-8">ABOUT TONY</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <section id="work" className="max-w-5xl mx-auto px-6 py-20 sm:py-24">
+          <div className="flex items-baseline justify-between mb-10 border-b border-stone/20 pb-4">
+            <h2 className="font-display text-4xl sm:text-5xl font-light text-bone">Recent work</h2>
+            <a href="https://instagram.com/tonywulfman.art" target="_blank" rel="noopener noreferrer"
+               className="text-sm text-stone hover:text-brass transition-colors">@tonywulfman.art</a>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+            {WORK.map((w) => <Tile key={w.file} {...w} />)}
+          </div>
+        </section>
+
+        <section id="about" className="border-y border-stone/15 bg-char">
+          <div className="max-w-5xl mx-auto px-6 py-20 sm:py-24 grid md:grid-cols-2 gap-14">
             <div>
-              <p className="text-base sm:text-lg text-gray-300 leading-relaxed mb-6">
-                With over 15 years of professional design and tattooing experience, Tony specializes in creating custom geometric patterns, fine-line work, and realistic portraits. Every piece is designed to match your vision perfectly.
-              </p>
-              <p className="text-base sm:text-lg text-gray-300 leading-relaxed">
-                Working exclusively at Old Town Tatu in Chicago, Tony maintains the highest standards of hygiene, professionalism, and artistry. Every appointment is treated as a collaboration—your ideas matter.
-              </p>
+              <h2 className="font-display text-4xl sm:text-5xl font-light text-bone mb-7">About Tony</h2>
+              <div className="space-y-5 text-stone leading-relaxed max-w-prose">
+                <p>
+                  Tattooing at Old Town Tatu since 2020, with fifteen years of design work behind
+                  it. The focus is geometric composition, fine-line detail and realistic portraits.
+                </p>
+                <p>
+                  Every appointment starts as a conversation. Bring references, a rough idea, or
+                  nothing but a feeling — the design gets built around your placement, your budget
+                  and how you actually want to wear it.
+                </p>
+                <p>Consultations are free.</p>
+              </div>
             </div>
             <div>
-              <h4 className="text-xl sm:text-2xl font-light tracking-wider mb-4">SPECIALTIES</h4>
-              <ul className="text-gray-300 space-y-3 text-base sm:text-lg">
-                <li className="flex items-start"><span className="mr-3">•</span><span>Geometric & Symmetrical Work</span></li>
-                <li className="flex items-start"><span className="mr-3">•</span><span>Fine Line & Detail</span></li>
-                <li className="flex items-start"><span className="mr-3">•</span><span>Portrait & Realism</span></li>
-                <li className="flex items-start"><span className="mr-3">•</span><span>Floral & Nature</span></li>
-                <li className="flex items-start"><span className="mr-3">•</span><span>Bold Black Work</span></li>
-                <li className="flex items-start"><span className="mr-3">•</span><span>Cover-ups & Reworks</span></li>
+              <h3 className="font-display text-2xl text-bone mb-6">Specialties</h3>
+              <ul className="divide-y divide-stone/15 border-y border-stone/15">
+                {['Geometric and symmetrical work','Fine line and detail','Portrait and realism','Floral and nature','Bold blackwork','Cover-ups and reworks'].map((s) => (
+                  <li key={s} className="py-3.5 text-stone">{s}</li>
+                ))}
               </ul>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Sleeve Work Showcase */}
-      <section id="portfolio" className="py-16 sm:py-20 bg-black text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h3 className="text-3xl sm:text-4xl font-light tracking-wider mb-12 text-center">PORTFOLIO</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { title: 'Geometric Patterns', desc: 'Symmetrical & intricate designs' },
-              { title: 'Fine Line Work', desc: 'Detailed & delicate linework' },
-              { title: 'Portraits', desc: 'Realistic faces & expressions' },
-              { title: 'Floral & Nature', desc: 'Organic & botanical themes' },
-              { title: 'Bold Black Work', desc: 'Strong & striking designs' },
-              { title: 'Sleeve Work', desc: 'Full & half sleeve designs' }
-            ].map((item, i) => (
-              <div key={i} className="border border-gray-800 bg-gray-950 p-6 hover:border-gray-600 transition">
-                <div className="aspect-square bg-gradient-to-br from-gray-900 to-black mb-4 flex items-center justify-center rounded">
-                  <span className="text-gray-600">Portfolio Sample</span>
-                </div>
-                <h4 className="text-lg font-light mb-2">{item.title}</h4>
-                <p className="text-sm text-gray-400">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+        <section id="book" className="max-w-2xl mx-auto px-6 py-20 sm:py-24">
+          <h2 className="font-display text-4xl sm:text-5xl font-light text-bone mb-3">Request an appointment</h2>
+          <p className="text-stone mb-10">
+            Tell Tony what you have in mind. He replies within 24 hours to confirm a time.
+          </p>
 
-      {/* Booking Form */}
-      <section id="book" className="py-16 sm:py-20 bg-gray-950 text-white">
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h3 className="text-3xl sm:text-4xl font-light tracking-wider mb-2 text-center">REQUEST APPOINTMENT</h3>
-          <p className="text-center text-gray-400 mb-12">Consultations are free. Let's create your perfect piece.</p>
-          
-          {submitted && (
-            <div className="bg-green-900 border border-green-700 text-green-100 p-4 rounded mb-8 text-center">
-              ✓ Appointment request sent! We'll contact you within 24 hours to confirm.
+          {sent && (
+            <div className="border border-brass/50 bg-brass/10 px-5 py-4 mb-8 text-bone">
+              Sent. Check your email for a copy — Tony will confirm within 24 hours.
             </div>
           )}
+          {err && (
+            <div className="border border-red-500/50 bg-red-500/10 px-5 py-4 mb-8 text-bone">{err}</div>
+          )}
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              <div>
-                <label className="block text-sm font-light mb-2 uppercase tracking-wide">Full Name *</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full bg-black border border-gray-700 px-4 py-3 text-white placeholder-gray-600 focus:border-white focus:outline-none transition"
-                  placeholder="Your name"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-light mb-2 uppercase tracking-wide">Email *</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full bg-black border border-gray-700 px-4 py-3 text-white placeholder-gray-600 focus:border-white focus:outline-none transition"
-                  placeholder="your@email.com"
-                />
-              </div>
+          <form onSubmit={submit} className="space-y-4">
+            <div className="grid sm:grid-cols-2 gap-4">
+              <input className={field} name="name" value={form.name} onChange={change} required placeholder="Your name" />
+              <input className={field} name="email" type="email" value={form.email} onChange={change} required placeholder="Email" />
             </div>
-
-            <div>
-              <label className="block text-sm font-light mb-2 uppercase tracking-wide">Phone</label>
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleInputChange}
-                className="w-full bg-black border border-gray-700 px-4 py-3 text-white placeholder-gray-600 focus:border-white focus:outline-none transition"
-                placeholder="(555) 123-4567"
-              />
+            <input className={field} name="phone" type="tel" value={form.phone} onChange={change} required placeholder="Phone" />
+            <div className="grid sm:grid-cols-2 gap-4">
+              <label className="block">
+                <span className="block text-sm text-stone mb-2">Preferred date</span>
+                <input className={field} name="date" type="date" value={form.date} onChange={change} required />
+              </label>
+              <label className="block">
+                <span className="block text-sm text-stone mb-2">Preferred time</span>
+                <input className={field} name="time" type="time" value={form.time} onChange={change} required />
+              </label>
             </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              <div>
-                <label className="block text-sm font-light mb-2 uppercase tracking-wide">Preferred Date</label>
-                <input
-                  type="date"
-                  name="date"
-                  value={formData.date}
-                  onChange={handleInputChange}
-                  className="w-full bg-black border border-gray-700 px-4 py-3 text-white focus:border-white focus:outline-none transition"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-light mb-2 uppercase tracking-wide">Preferred Time</label>
-                <input
-                  type="time"
-                  name="time"
-                  value={formData.time}
-                  onChange={handleInputChange}
-                  className="w-full bg-black border border-gray-700 px-4 py-3 text-white focus:border-white focus:outline-none transition"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-light mb-2 uppercase tracking-wide">Describe Your Tattoo Idea *</label>
-              <textarea
-                name="description"
-                value={formData.description}
-                onChange={handleInputChange}
-                required
-                className="w-full bg-black border border-gray-700 px-4 py-3 text-white placeholder-gray-600 focus:border-white focus:outline-none transition h-32 resize-none"
-                placeholder="Style, size, placement, inspiration, references, etc..."
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-white text-black py-3 font-medium uppercase tracking-wide hover:bg-gray-200 transition disabled:opacity-50"
-            >
-              {loading ? 'SENDING...' : 'REQUEST APPOINTMENT'}
+            <textarea className={`${field} h-36 resize-none`} name="description" value={form.description} onChange={change} required
+              placeholder="What are you thinking? Style, size, placement, any references you have." />
+            <button type="submit" disabled={busy}
+              className="w-full bg-brass text-ink py-3.5 font-medium hover:bg-bone transition-colors disabled:opacity-50">
+              {busy ? 'Sending…' : 'Send request'}
             </button>
-
-            <p className="text-center text-xs text-gray-500 pt-4">
-              We'll review your request and contact you to confirm timing and discuss your design in detail.
-            </p>
           </form>
-        </div>
-      </section>
+        </section>
 
-      {/* Contact/Hours */}
-      <section className="py-16 bg-black text-white border-t border-gray-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
+        <footer className="border-t border-stone/15">
+          <div className="max-w-5xl mx-auto px-6 py-14 grid sm:grid-cols-3 gap-10">
             <div>
-              <h4 className="text-sm font-light tracking-widest mb-3 uppercase">Location</h4>
-              <p className="text-base text-gray-300">Old Town Tatu</p>
-              <p className="text-sm text-gray-500">Chicago, IL</p>
+              <img src="/tony-wulfman-logo.png" alt="" className="h-12 w-12 object-contain invert mb-4" />
+              <p className="font-display text-lg text-bone">Old Town Tatu</p>
+              <p className="text-stone text-sm">Chicago, Illinois</p>
             </div>
             <div>
-              <h4 className="text-sm font-light tracking-widest mb-3 uppercase">Contact</h4>
-              <a href="mailto:tonywulfman.art@gmail.com" className="text-base text-gray-300 hover:text-white transition">
+              <p className="text-bone mb-2">Get in touch</p>
+              <a href="mailto:tonywulfman.art@gmail.com" className="text-stone hover:text-brass transition-colors text-sm break-all">
                 tonywulfman.art@gmail.com
               </a>
             </div>
             <div>
-              <h4 className="text-sm font-light tracking-widest mb-3 uppercase">Follow</h4>
-              <a href="https://instagram.com/tonywulfman.art" target="_blank" rel="noopener noreferrer" className="text-base text-gray-300 hover:text-white transition">
-                @tonywulfman.art
-              </a>
+              <p className="text-bone mb-2">Follow</p>
+              <a href="https://instagram.com/tonywulfman.art" target="_blank" rel="noopener noreferrer"
+                 className="text-stone hover:text-brass transition-colors text-sm">@tonywulfman.art</a>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-black border-t border-gray-900 py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="flex justify-center mb-4">
-            <div className="relative w-8 h-8">
-              <Image
-                src="/tony-wulfman-logo.png"
-                alt="Tony Wulfman"
-                fill
-                className="object-contain"
-                sizes="32px"
-              />
-            </div>
+          <div className="border-t border-stone/15 py-6 text-center text-xs text-stone">
+            © 2026 Tony Wulfman
           </div>
-          <p className="text-gray-400 text-sm">&copy; 2026 Tony Wulfman | Old Town Tatu Chicago</p>
-          <p className="text-gray-500 text-xs mt-2">Professional Tattoo Design & Artistry</p>
-        </div>
-      </footer>
+        </footer>
+      </div>
     </>
   );
 }

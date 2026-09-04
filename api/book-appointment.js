@@ -78,8 +78,14 @@ function validateReference(referenceImage) {
 }
 
 export default async function handler(req, res) {
+  // Safe production verification: confirms the function is reachable without
+  // sending email, creating calendar events, or submitting a fake appointment.
+  if (req.method === 'GET' && req.query?.health === '1') {
+    return res.status(200).json({ success: true, service: 'tony-booking', mode: 'health' });
+  }
+
   if (req.method !== 'POST') {
-    res.setHeader('Allow', 'POST');
+    res.setHeader('Allow', 'GET, POST');
     return res.status(405).json({ error: 'Method not allowed' });
   }
 

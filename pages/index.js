@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import { useEffect, useRef, useState } from 'react';
 import Portfolio from '../components/Portfolio';
 
 const BOOKING_URL = 'https://venue.ink/@tonywulfmanart?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAcGRvZgJleHRuA2FlbQIxMQBzcnRjBmFwcF9pZA85MzY2MTk3NDMzOTI0NTkAAadJjSxgDAiuv_g9vGum0F-Q8fbZWhtrohCPPBkFbjKIBjb2RGlrQF52tLCcAg_aem_vyGNERdHhcwwgsQZWc4CHQ';
@@ -83,6 +84,42 @@ function SectionHeading({ id, children, intro }) {
   );
 }
 
+function Reveal({ children, className = '', delay = 0 }) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return undefined;
+    if (!('IntersectionObserver' in window)) {
+      setVisible(true);
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.12 },
+    );
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className={`reveal ${visible ? 'is-visible' : ''} ${className}`}
+      style={{ '--reveal-delay': `${delay}ms` }}
+    >
+      {children}
+    </div>
+  );
+}
+
 export default function Home() {
   return (
     <>
@@ -125,7 +162,7 @@ export default function Home() {
         <main id="main">
           <header id="top" className="bg-bone text-ink">
             <div className="mx-auto grid min-h-[620px] max-w-6xl items-center gap-12 px-6 py-20 md:grid-cols-[1.08fr_.92fr] md:py-24">
-              <div>
+              <Reveal>
                 <p className="mb-5 text-xs tracking-[0.14em] text-ink/55">TATTOO ARTIST · CHICAGO, ILLINOIS</p>
                 <h1 className="font-display text-6xl font-light leading-[0.82] tracking-[-0.035em] sm:text-8xl md:text-9xl">Tony<br />Wulfman</h1>
                 <p className="mt-7 max-w-xl font-display text-3xl leading-tight text-ink/70 sm:text-4xl">Precision, composition and detail built around the person wearing the piece.</p>
@@ -134,10 +171,10 @@ export default function Home() {
                   <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="bg-ink px-7 py-3.5 text-bone hover:bg-brass hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-brass">Book on Venue Ink</a>
                   <a href="#work" className="border border-ink/25 px-7 py-3.5 hover:border-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-ink">See selected work</a>
                 </div>
-              </div>
-              <div className="flex justify-center md:justify-end">
+              </Reveal>
+              <Reveal className="flex justify-center md:justify-end" delay={140}>
                 <img src="/tony-wulfman-logo.png" alt="Tony Wulfman crest, a split marble face and wolf framed by a triangle and laurels" className="w-full max-w-sm object-contain mix-blend-multiply" />
-              </div>
+              </Reveal>
             </div>
           </header>
 
@@ -145,66 +182,68 @@ export default function Home() {
 
           <section id="about" className="border-y border-stone/15 bg-char">
             <div className="mx-auto grid max-w-6xl gap-14 px-6 py-20 sm:py-24 md:grid-cols-2">
-              <div>
+              <Reveal>
                 <h2 className="font-display text-4xl font-light text-bone sm:text-5xl">About Tony</h2>
                 <div className="mt-7 max-w-prose space-y-5 leading-relaxed text-stone">
-                  <p>Tony’s work at Old Town Tatu centers on careful linework, balanced composition and designs shaped around placement rather than treated like a flat graphic.</p>
-                  <p>Every request starts with the idea, the area, the size and the way you want the piece to feel. References help, but they are a starting point rather than a template to copy.</p>
+                  <p>Tony creates custom tattoos at Old Town Tatu with close attention to line, balance, placement and how the work moves with the body.</p>
+                  <p>Bring your idea, placement, approximate size and reference images. Tony uses them to shape an original piece rather than copy another artist’s work.</p>
                   {/* TODO: Confirm Tony’s start year and prior design experience before publishing either claim. */}
                 </div>
-              </div>
-              <div>
+              </Reveal>
+              <Reveal delay={120}>
                 <h3 className="font-display text-2xl text-bone">Specialties</h3>
                 <ul className="mt-6 divide-y divide-stone/15 border-y border-stone/15">
                   {SPECIALTIES.map((specialty) => <li key={specialty} className="py-4 text-stone">{specialty}</li>)}
                 </ul>
-              </div>
+              </Reveal>
             </div>
 
             <div className="mx-auto max-w-6xl px-6 pb-20 sm:pb-24">
-              <div className="grid justify-center gap-4 md:grid-cols-[480px_360px]">
+              <Reveal className="grid justify-center gap-4 md:grid-cols-[480px_360px]">
                 <img src="https://res.cloudinary.com/hxnwueko/image/upload/e_gen_restore/e_upscale/q_auto:best/f_webp/v1788485635/tony-tattooing-session.webp" alt="Tony Wulfman tattooing a client at Old Town Tatu" className="h-auto w-full max-w-[480px] self-start object-cover" loading="lazy" />
                 <div className="grid gap-4">
                   <img src="https://res.cloudinary.com/hxnwueko/image/upload/e_gen_restore/e_upscale/q_auto:best/f_webp/v1788485741/tony-with-client.webp" alt="Tony Wulfman working with a client in the tattoo studio" className="h-auto w-full max-w-[360px] object-cover" loading="lazy" />
                   <img src="https://res.cloudinary.com/hxnwueko/image/upload/e_gen_restore/e_upscale/q_auto:best/f_webp/v1788485853/tony-outside-old-town.webp" alt="Tony Wulfman outside Old Town Tatu in Chicago" className="h-auto w-full max-w-[360px] object-cover" loading="lazy" />
                 </div>
-              </div>
+              </Reveal>
             </div>
           </section>
 
           <section id="pricing" className="mx-auto max-w-6xl px-6 py-20 sm:py-24" aria-labelledby="pricing-title">
             <div className="grid gap-12 lg:grid-cols-[.82fr_1.18fr] lg:items-start">
-              <div>
+              <Reveal>
                 <SectionHeading id="pricing-title" intro="The idea comes first. The quote follows the actual scope of the piece.">Pricing</SectionHeading>
-                <p className="mt-8 max-w-lg leading-relaxed text-stone">Tony’s philosophy around tattooing is personal: body image, self-expression and the experience of living in your own skin all matter. Money should be part of an honest planning conversation, not a reason to avoid asking about the piece you want.</p>
-              </div>
+                <p className="mt-8 max-w-lg leading-relaxed text-stone">Every tattoo is quoted individually. Size, placement, detail and expected session time all shape the price.</p>
+              </Reveal>
 
-              <div className="border border-brass/60 bg-char p-7 sm:p-10">
+              <Reveal className="border border-brass/60 bg-char p-7 sm:p-10" delay={120}>
                 <div className="border-b border-brass/35 pb-7 text-center">
                   <p className="font-display text-3xl italic leading-snug text-bone sm:text-4xl">“Your body is your journal, and your tattoos are your story.”</p>
                 </div>
                 <div className="mt-7 space-y-5 leading-relaxed text-stone">
-                  <p>Tony’s approach to tattooing is shaped by his own experiences with body image, love and life.</p>
-                  <p>The process is a collaboration. If cost is making you hesitate, start the conversation anyway so the project can be discussed honestly and a realistic plan can be considered.</p>
-                  <p>Every piece is different. Pricing depends on factors such as size, placement, detail and expected session time.</p>
+                  <p>A tattoo is personal. Tony’s process is collaborative, clear and built around the story you want to carry.</p>
+                  <p>Share the concept, placement and approximate size through Venue Ink. Tony will review the request before the session is confirmed.</p>
                 </div>
                 <div className="mt-8 border-t border-brass/35 pt-6 text-center">
                   <p className="text-sm tracking-[0.08em] text-bone">CUSTOM QUOTES ARE DISCUSSED DURING CONSULTATION.</p>
-                  <p className="mt-3 text-xs leading-relaxed text-stone">No fixed minimum, hourly rate or deposit amount is published here until Tony confirms those details.</p>
+                  <p className="mt-3 text-xs leading-relaxed text-stone">Tony confirms the quote, minimum and any deposit directly through the booking process.</p>
                 </div>
                 <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="mt-8 inline-flex bg-brass px-6 py-3 text-sm font-medium text-ink hover:bg-bone focus:outline-none focus-visible:ring-2 focus-visible:ring-bone">Book through Venue Ink</a>
-              </div>
+              </Reveal>
             </div>
           </section>
 
           <section className="mx-auto max-w-4xl px-6 py-20 text-center sm:py-24" aria-label="Client review">
-            <p className="font-display text-3xl italic leading-snug text-bone sm:text-4xl">“He didn’t rush… he took his time with his work… his line work is spectacular.”</p>
-            <p className="mt-5 text-sm text-stone">Amanda S. · client review published by Old Town Tatu</p>
+            <Reveal>
+              <p className="font-display text-3xl italic leading-snug text-bone sm:text-4xl">“He didn’t rush… he took his time with his work… his line work is spectacular.”</p>
+              <p className="mt-5 text-sm text-stone">Amanda S. · client review published by Old Town Tatu</p>
+            </Reveal>
           </section>
 
           <section id="faq" className="mx-auto max-w-4xl px-6 py-20 sm:py-24" aria-labelledby="faq-title">
-            <SectionHeading id="faq-title" intro="A few practical questions about Tony’s work and process.">Frequently asked</SectionHeading>
-            <div className="mt-9 border-y border-stone/20">
+            <Reveal>
+              <SectionHeading id="faq-title" intro="Practical details about Tony’s work and booking process.">Frequently asked</SectionHeading>
+              <div className="mt-9 border-y border-stone/20">
               {FAQS.map((item) => (
                 <details key={item.question} className="group border-b border-stone/15 last:border-b-0">
                   <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-6 text-left text-bone focus:outline-none focus-visible:ring-2 focus-visible:ring-brass">
@@ -214,7 +253,8 @@ export default function Home() {
                   <p className="max-w-3xl pb-6 leading-relaxed text-stone">{item.answer}</p>
                 </details>
               ))}
-            </div>
+              </div>
+            </Reveal>
           </section>
         </main>
 

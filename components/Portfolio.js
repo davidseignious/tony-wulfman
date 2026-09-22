@@ -3,24 +3,66 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 // Portfolio images are Tony Wulfman's work from his official Old Town Tatu portfolio.
 // Do not add style tags until each tattoo has been visually verified.
 const WORK = [
-  { src: 'https://res.cloudinary.com/hxnwueko/image/upload/v1788482651/tony-work-01.jpg', tags: [] },
-  { src: 'https://res.cloudinary.com/hxnwueko/image/upload/v1788482660/tony-work-02.jpg', tags: [] },
-  { src: 'https://res.cloudinary.com/hxnwueko/image/upload/v1788482667/tony-work-03.jpg', tags: [] },
-  { src: 'https://res.cloudinary.com/hxnwueko/image/upload/v1788482674/tony-work-04.jpg', tags: [] },
-  { src: 'https://res.cloudinary.com/hxnwueko/image/upload/v1788482680/tony-work-05.jpg', tags: [] },
-  { src: 'https://res.cloudinary.com/hxnwueko/image/upload/v1788482687/tony-work-06.jpg', tags: [] },
-  { src: 'https://res.cloudinary.com/hxnwueko/image/upload/v1788482694/tony-work-07.jpg', tags: [] },
-  { src: 'https://res.cloudinary.com/hxnwueko/image/upload/v1788482702/tony-work-08.jpg', tags: [] },
+  {
+    src: 'https://res.cloudinary.com/hxnwueko/image/upload/q_auto:best,f_auto/v1788482651/tony-work-01.jpg',
+    title: 'Clock and rose memorial',
+    tags: ['black-grey', 'realism', 'floral'],
+  },
+  {
+    src: 'https://res.cloudinary.com/hxnwueko/image/upload/q_auto:best,f_auto/v1788482660/tony-work-02.jpg',
+    title: 'Eye and clock composition',
+    tags: ['black-grey', 'realism'],
+  },
+  {
+    src: 'https://res.cloudinary.com/hxnwueko/image/upload/q_auto:best,f_auto/v1788482667/tony-work-03.jpg',
+    title: 'Fine-line symbol',
+    tags: ['fine-line'],
+  },
+  {
+    src: 'https://res.cloudinary.com/hxnwueko/image/upload/q_auto:best,f_auto/v1788482674/tony-work-04.jpg',
+    title: 'Animal-eye realism',
+    tags: ['realism', 'portrait'],
+  },
+  {
+    src: 'https://res.cloudinary.com/hxnwueko/image/upload/q_auto:best,f_auto/v1788482680/tony-work-05.jpg',
+    title: 'Fine-line figurative piece',
+    tags: ['fine-line', 'black-grey'],
+  },
+  {
+    src: 'https://res.cloudinary.com/hxnwueko/image/upload/q_auto:best,f_auto/v1788482687/tony-work-06.jpg',
+    title: 'Wolf and mountain scene',
+    tags: ['black-grey', 'nature'],
+  },
+  {
+    src: 'https://res.cloudinary.com/hxnwueko/image/upload/q_auto:best,f_auto/v1788482694/tony-work-07.jpg',
+    title: 'Chicago memorial composition',
+    tags: ['black-grey', 'realism', 'portrait'],
+  },
+  {
+    src: 'https://res.cloudinary.com/hxnwueko/image/upload/q_auto:best,f_auto/v1788482702/tony-work-08.jpg',
+    title: 'Color character portrait',
+    tags: ['color', 'realism', 'portrait'],
+  },
 ];
 
 const TAG_LABELS = {
-  geometric: 'Geometric',
   'fine-line': 'Fine line',
-  realism: 'Portrait / realism',
-  floral: 'Floral / nature',
-  blackwork: 'Blackwork',
-  'cover-up': 'Cover-up / rework',
+  realism: 'Realism',
+  portrait: 'Portrait',
+  floral: 'Floral',
+  nature: 'Nature',
+  'black-grey': 'Black & grey',
+  color: 'Color',
 };
+
+const FILTERS = [
+  { id: 'all', label: 'All work' },
+  { id: 'realism', label: 'Realism' },
+  { id: 'fine-line', label: 'Fine line' },
+  { id: 'black-grey', label: 'Black & grey' },
+  { id: 'nature', label: 'Nature & floral', matches: ['nature', 'floral'] },
+  { id: 'color', label: 'Color' },
+];
 
 function WorkTile({ item, index, onOpen, onAvailability }) {
   const [state, setState] = useState('checking');
@@ -28,7 +70,7 @@ function WorkTile({ item, index, onOpen, onAvailability }) {
   if (state === 'failed') return null;
 
   return (
-    <figure className="mb-4 break-inside-avoid overflow-hidden border border-stone/15 bg-char">
+    <figure className="portfolio-tile mb-4 break-inside-avoid overflow-hidden border border-stone/15 bg-char">
       <button
         type="button"
         onClick={onOpen}
@@ -39,7 +81,7 @@ function WorkTile({ item, index, onOpen, onAvailability }) {
         <span className="block min-h-56 overflow-hidden bg-char">
           <img
             src={item.src}
-            alt="Tattoo by Tony Wulfman at Old Town Tatu in Chicago"
+            alt={`${item.title}, tattoo by Tony Wulfman at Old Town Tatu in Chicago`}
             loading="lazy"
             decoding="async"
             onLoad={(event) => {
@@ -61,9 +103,12 @@ function WorkTile({ item, index, onOpen, onAvailability }) {
           />
         </span>
         {state === 'ready' && (
-          <figcaption className="flex items-center justify-between gap-4 border-t border-stone/15 px-4 py-3 text-xs text-stone">
-            <span>{item.tags.length ? item.tags.map((tag) => TAG_LABELS[tag] || tag).join(' · ') : 'Selected work'}</span>
-            <span>View piece</span>
+          <figcaption className="flex items-end justify-between gap-4 border-t border-stone/15 px-4 py-3 text-left">
+            <span>
+              <span className="block font-display text-lg leading-tight text-bone">{item.title}</span>
+              <span className="mt-1 block text-xs text-stone">{item.tags.map((tag) => TAG_LABELS[tag] || tag).join(' · ')}</span>
+            </span>
+            <span className="shrink-0 text-xs text-brass">View</span>
           </figcaption>
         )}
       </button>
@@ -112,8 +157,8 @@ function Lightbox({ items, index, onIndex, onClose }) {
       <div className="mx-auto flex h-full max-w-6xl flex-col">
         <div className="mb-4 flex items-center justify-between gap-4 border-b border-stone/20 pb-4">
           <div>
-            <p id="gallery-dialog-title" className="font-display text-2xl text-bone">Selected work</p>
-            <p className="text-xs text-stone">{index + 1} of {items.length}</p>
+            <p id="gallery-dialog-title" className="font-display text-2xl text-bone">{item.title}</p>
+            <p className="text-xs text-stone">{item.tags.map((tag) => TAG_LABELS[tag] || tag).join(' · ')} · {index + 1} of {items.length}</p>
           </div>
           <button
             ref={closeRef}
@@ -130,7 +175,7 @@ function Lightbox({ items, index, onIndex, onClose }) {
           <div className="flex h-full items-center justify-center px-11 sm:px-16">
             <img
               src={item.src}
-              alt="Tattoo by Tony Wulfman at Old Town Tatu in Chicago"
+              alt={`${item.title}, tattoo by Tony Wulfman at Old Town Tatu in Chicago`}
               className="max-h-full max-w-full object-contain"
             />
           </div>
@@ -163,10 +208,18 @@ function Lightbox({ items, index, onIndex, onClose }) {
 export default function Portfolio() {
   const [availability, setAvailability] = useState({});
   const [lightboxIndex, setLightboxIndex] = useState(null);
+  const [activeFilter, setActiveFilter] = useState('all');
+
+  const filteredWork = useMemo(() => {
+    if (activeFilter === 'all') return WORK;
+    const filter = FILTERS.find((option) => option.id === activeFilter);
+    const matches = filter?.matches || [activeFilter];
+    return WORK.filter((item) => item.tags.some((tag) => matches.includes(tag)));
+  }, [activeFilter]);
 
   const availableItems = useMemo(
-    () => WORK.filter((item) => availability[item.src] === true),
-    [availability],
+    () => filteredWork.filter((item) => availability[item.src] === true),
+    [availability, filteredWork],
   );
 
   const setItemAvailability = (src, value) => {
@@ -179,7 +232,7 @@ export default function Portfolio() {
         <div>
           <h2 id="work-title" className="font-display text-4xl font-light text-bone sm:text-5xl">Selected work</h2>
           <p className="mt-3 max-w-2xl leading-relaxed text-stone">
-            Full-resolution portfolio images only, shown at their natural proportions so detail stays sharp.
+            Explore Tony’s work by style, then open any piece for a closer look at the detail.
           </p>
         </div>
         <a
@@ -192,12 +245,36 @@ export default function Portfolio() {
         </a>
       </div>
 
+      <div className="mb-8 flex flex-wrap gap-2" aria-label="Filter portfolio by style">
+        {FILTERS.map((filter) => {
+          const selected = activeFilter === filter.id;
+          return (
+            <button
+              key={filter.id}
+              type="button"
+              aria-pressed={selected}
+              onClick={() => {
+                setActiveFilter(filter.id);
+                setLightboxIndex(null);
+              }}
+              className={`border px-4 py-2 text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brass ${
+                selected
+                  ? 'border-brass bg-brass text-ink'
+                  : 'border-stone/25 text-stone hover:border-brass hover:text-bone'
+              }`}
+            >
+              {filter.label}
+            </button>
+          );
+        })}
+      </div>
+
       <div className="columns-1 gap-4 sm:columns-2 lg:columns-3">
-        {WORK.map((item, index) => (
+        {filteredWork.map((item) => (
           <WorkTile
             key={item.src}
             item={item}
-            index={index}
+            index={WORK.findIndex((work) => work.src === item.src)}
             onAvailability={setItemAvailability}
             onOpen={() => {
               const availableIndex = availableItems.findIndex((candidate) => candidate.src === item.src);
@@ -206,10 +283,6 @@ export default function Portfolio() {
           />
         ))}
       </div>
-
-      <p className="mt-5 text-xs leading-relaxed text-stone">
-        Style labels are added only after each piece is visually verified. A sleeve is treated as placement/scale, not as a tattoo style.
-      </p>
 
       {lightboxIndex !== null && availableItems[lightboxIndex] && (
         <Lightbox

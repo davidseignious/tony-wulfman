@@ -131,7 +131,7 @@ export default function Home() {
                 <p className="mt-7 max-w-xl font-display text-3xl leading-tight text-ink/70 sm:text-4xl">Precision, composition and detail built around the person wearing the piece.</p>
                 <p className="mt-7 max-w-xl leading-relaxed text-ink/60">Tony tattoos at Old Town Tatu in Chicago, working across geometric and symmetrical designs, fine line, portrait and realism, floral and nature, bold blackwork, and cover-ups or reworks.</p>
                 <div className="mt-9 flex flex-wrap gap-3">
-                  <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="bg-ink px-7 py-3.5 text-bone hover:bg-brass hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-brass">Book with Tony</a>
+                  <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="bg-ink px-7 py-3.5 text-bone hover:bg-brass hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-brass">Book on Venue Ink</a>
                   <a href="#work" className="border border-ink/25 px-7 py-3.5 hover:border-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-ink">See selected work</a>
                 </div>
               </div>
@@ -163,10 +163,10 @@ export default function Home() {
 
             <div className="mx-auto max-w-6xl px-6 pb-20 sm:pb-24">
               <div className="grid justify-center gap-4 md:grid-cols-[480px_360px]">
-                <img src="https://res.cloudinary.com/hxnwueko/image/upload/v1788485635/tony-tattooing-session.webp" alt="Tony Wulfman tattooing a client at Old Town Tatu" className="h-auto w-full max-w-[480px] self-start object-cover" loading="lazy" />
+                <img src="https://res.cloudinary.com/hxnwueko/image/upload/e_gen_restore/e_upscale/q_auto:best/f_webp/v1788485635/tony-tattooing-session.webp" alt="Tony Wulfman tattooing a client at Old Town Tatu" className="h-auto w-full max-w-[480px] self-start object-cover" loading="lazy" />
                 <div className="grid gap-4">
-                  <img src="https://res.cloudinary.com/hxnwueko/image/upload/v1788485741/tony-with-client.webp" alt="Tony Wulfman working with a client in the tattoo studio" className="h-auto w-full max-w-[360px] object-cover" loading="lazy" />
-                  <img src="https://res.cloudinary.com/hxnwueko/image/upload/v1788485853/tony-outside-old-town.webp" alt="Tony Wulfman outside Old Town Tatu in Chicago" className="h-auto w-full max-w-[360px] object-cover" loading="lazy" />
+                  <img src="https://res.cloudinary.com/hxnwueko/image/upload/e_gen_restore/e_upscale/q_auto:best/f_webp/v1788485741/tony-with-client.webp" alt="Tony Wulfman working with a client in the tattoo studio" className="h-auto w-full max-w-[360px] object-cover" loading="lazy" />
+                  <img src="https://res.cloudinary.com/hxnwueko/image/upload/e_gen_restore/e_upscale/q_auto:best/f_webp/v1788485853/tony-outside-old-town.webp" alt="Tony Wulfman outside Old Town Tatu in Chicago" className="h-auto w-full max-w-[360px] object-cover" loading="lazy" />
                 </div>
               </div>
             </div>

@@ -200,10 +200,10 @@ export default function Home() {
 
             <div className="mx-auto max-w-6xl px-6 pb-20 sm:pb-24">
               <Reveal className="grid justify-center gap-4 md:grid-cols-[480px_360px]">
-                <img src="https://res.cloudinary.com/hxnwueko/image/upload/e_gen_restore/e_upscale/q_auto:best/f_webp/v1788485635/tony-tattooing-session.webp" alt="Tony Wulfman tattooing a client at Old Town Tatu" className="h-auto w-full max-w-[480px] self-start object-cover" loading="lazy" />
+                <img src="https://res.cloudinary.com/hxnwueko/image/upload/e_gen_restore/e_sharpen/f_auto/q_auto:best/v1788485635/tony-tattooing-session.webp" alt="Tony Wulfman tattooing a client at Old Town Tatu" className="h-auto w-full max-w-[480px] self-start object-cover" loading="lazy" />
                 <div className="grid gap-4">
-                  <img src="https://res.cloudinary.com/hxnwueko/image/upload/e_gen_restore/e_upscale/q_auto:best/f_webp/v1788485741/tony-with-client.webp" alt="Tony Wulfman working with a client in the tattoo studio" className="h-auto w-full max-w-[360px] object-cover" loading="lazy" />
-                  <img src="https://res.cloudinary.com/hxnwueko/image/upload/e_gen_restore/e_upscale/q_auto:best/f_webp/v1788485853/tony-outside-old-town.webp" alt="Tony Wulfman outside Old Town Tatu in Chicago" className="h-auto w-full max-w-[360px] object-cover" loading="lazy" />
+                  <img src="https://res.cloudinary.com/hxnwueko/image/upload/e_gen_restore/e_sharpen/f_auto/q_auto:best/v1788485741/tony-with-client.webp" alt="Tony Wulfman working with a client in the tattoo studio" className="h-auto w-full max-w-[360px] object-cover" loading="lazy" />
+                  <img src="https://res.cloudinary.com/hxnwueko/image/upload/e_gen_restore/e_sharpen/f_auto/q_auto:best/v1788485853/tony-outside-old-town.webp" alt="Tony Wulfman outside Old Town Tatu in Chicago" className="h-auto w-full max-w-[360px] object-cover" loading="lazy" />
                 </div>
               </Reveal>
             </div>

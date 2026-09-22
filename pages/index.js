@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import Portfolio from '../components/Portfolio';
-import BookingForm from '../components/BookingForm';
+
+const BOOKING_URL = 'https://venue.ink/@tonywulfmanart';
 
 const SPECIALTIES = [
   'Geometric and symmetrical work',
@@ -22,11 +23,11 @@ const FAQS = [
   },
   {
     question: 'Is my preferred date guaranteed?',
-    answer: 'No. The form sends a request, not a confirmed appointment. Tony will confirm availability directly before anything is locked in.',
+    answer: 'Use Tony’s official Venue Ink page to submit your tattoo details and see his booking flow. Tony can confirm the project details through Venue Ink.',
   },
   {
     question: 'Can I send reference images?',
-    answer: 'Yes. The booking form accepts one JPG, PNG, or WebP image up to 2 MB and attaches it to the request Tony receives.',
+    answer: 'Yes. Use Tony’s official Venue Ink booking page to provide your tattoo details and any reference material the booking flow allows.',
   },
   {
     question: 'Do you take cover-ups and reworks?',
@@ -34,7 +35,7 @@ const FAQS = [
   },
   {
     question: 'What if this is my first tattoo?',
-    answer: 'Mark the first-tattoo box in the request so Tony has that context. Ask about preparation, placement, pacing or anything else before confirming.',
+    answer: 'Mention that it is your first tattoo when booking through Venue Ink so Tony has that context. Ask about preparation, placement, pacing or anything else before confirming.',
   },
   {
     question: 'What should I do after my tattoo?',
@@ -105,11 +106,11 @@ export default function Home() {
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://tonywulfman.art/" />
         <meta property="og:title" content="Tony Wulfman — Tattoo Artist in Chicago" />
-        <meta property="og:description" content="Selected tattoo work, session information, aftercare and appointment requests for Tony Wulfman at Old Town Tatu in Chicago." />
+        <meta property="og:description" content="Selected tattoo work, session information, aftercare and official Venue Ink booking for Tony Wulfman at Old Town Tatu in Chicago." />
         <meta property="og:image" content="https://tonywulfman.art/tony-wulfman-logo.png" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Tony Wulfman — Tattoo Artist in Chicago" />
-        <meta name="twitter:description" content="Selected tattoo work and appointment requests for Tony Wulfman at Old Town Tatu in Chicago." />
+        <meta name="twitter:description" content="Selected tattoo work and official Venue Ink booking for Tony Wulfman at Old Town Tatu in Chicago." />
         <meta name="twitter:image" content="https://tonywulfman.art/tony-wulfman-logo.png" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(shopSchema) }} />
@@ -129,7 +130,7 @@ export default function Home() {
               <a href="#about" className="hidden text-stone hover:text-bone focus:outline-none focus-visible:text-brass sm:inline">About</a>
               <a href="#aftercare" className="hidden text-stone hover:text-bone focus:outline-none focus-visible:text-brass lg:inline">Aftercare</a>
               <a href="#faq" className="hidden text-stone hover:text-bone focus:outline-none focus-visible:text-brass md:inline">FAQ</a>
-              <a href="#book" className="bg-brass px-4 py-2 text-ink hover:bg-bone focus:outline-none focus-visible:ring-2 focus-visible:ring-bone">Book</a>
+              <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="bg-brass px-4 py-2 text-ink hover:bg-bone focus:outline-none focus-visible:ring-2 focus-visible:ring-bone">Book on Venue Ink</a>
             </div>
           </div>
         </nav>
@@ -143,7 +144,7 @@ export default function Home() {
                 <p className="mt-7 max-w-xl font-display text-3xl leading-tight text-ink/70 sm:text-4xl">Precision, composition and detail built around the person wearing the piece.</p>
                 <p className="mt-7 max-w-xl leading-relaxed text-ink/60">Tony tattoos at Old Town Tatu in Chicago, working across geometric and symmetrical designs, fine line, portrait and realism, floral and nature, bold blackwork, and cover-ups or reworks.</p>
                 <div className="mt-9 flex flex-wrap gap-3">
-                  <a href="#book" className="bg-ink px-7 py-3.5 text-bone hover:bg-brass hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-brass">Request an appointment</a>
+                  <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="bg-ink px-7 py-3.5 text-bone hover:bg-brass hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-brass">Book on Venue Ink</a>
                   <a href="#work" className="border border-ink/25 px-7 py-3.5 hover:border-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-ink">See selected work</a>
                 </div>
               </div>
@@ -175,17 +176,17 @@ export default function Home() {
 
             <div className="mx-auto max-w-6xl px-6 pb-20 sm:pb-24">
               <div className="grid justify-center gap-4 md:grid-cols-[480px_360px]">
-                <img src="https://res.cloudinary.com/hxnwueko/image/upload/v1788485635/tony-tattooing-session.webp" alt="Tony Wulfman tattooing a client at Old Town Tatu" className="h-auto w-full max-w-[480px] self-start object-cover" loading="lazy" />
+                <img src="https://res.cloudinary.com/hxnwueko/image/upload/e_gen_restore/e_upscale/q_auto:best/f_webp/v1788485635/tony-tattooing-session.webp" alt="Tony Wulfman tattooing a client at Old Town Tatu" className="h-auto w-full max-w-[480px] self-start object-cover" loading="lazy" />
                 <div className="grid gap-4">
-                  <img src="https://res.cloudinary.com/hxnwueko/image/upload/v1788485741/tony-with-client.webp" alt="Tony Wulfman working with a client in the tattoo studio" className="h-auto w-full max-w-[360px] object-cover" loading="lazy" />
-                  <img src="https://res.cloudinary.com/hxnwueko/image/upload/v1788485853/tony-outside-old-town.webp" alt="Tony Wulfman outside Old Town Tatu in Chicago" className="h-auto w-full max-w-[360px] object-cover" loading="lazy" />
+                  <img src="https://res.cloudinary.com/hxnwueko/image/upload/e_gen_restore/e_upscale/q_auto:best/f_webp/v1788485741/tony-with-client.webp" alt="Tony Wulfman working with a client in the tattoo studio" className="h-auto w-full max-w-[360px] object-cover" loading="lazy" />
+                  <img src="https://res.cloudinary.com/hxnwueko/image/upload/e_gen_restore/e_upscale/q_auto:best/f_webp/v1788485853/tony-outside-old-town.webp" alt="Tony Wulfman outside Old Town Tatu in Chicago" className="h-auto w-full max-w-[360px] object-cover" loading="lazy" />
                 </div>
               </div>
             </div>
           </section>
 
           <section className="mx-auto max-w-6xl px-6 py-20 sm:py-24" aria-labelledby="before-book-title">
-            <SectionHeading id="before-book-title" intro="A few things to know before you send a request.">Before you book</SectionHeading>
+            <SectionHeading id="before-book-title" intro="A few things to know before you book through Tony’s official Venue Ink page.">Before you book</SectionHeading>
             <div className="mt-10 grid gap-px border border-stone/15 bg-stone/15 md:grid-cols-3">
               <article className="bg-ink p-7">
                 <p className="font-display text-3xl text-bone">18+ only</p>
@@ -193,11 +194,11 @@ export default function Home() {
               </article>
               <article className="bg-ink p-7">
                 <p className="font-display text-3xl text-bone">Request, not reservation</p>
-                <p className="mt-4 leading-relaxed text-stone">Submitting the form starts the conversation. Your preferred date is not reserved until Tony confirms the project and availability directly.</p>
+                <p className="mt-4 leading-relaxed text-stone">Use Tony’s official Venue Ink page for the current booking process, availability details and project information.</p>
               </article>
               <article className="bg-ink p-7">
                 <p className="font-display text-3xl text-bone">First tattoo?</p>
-                <p className="mt-4 leading-relaxed text-stone">Say so in the form. There is space to ask questions about placement, preparation, pacing and what the session will feel like.</p>
+                <p className="mt-4 leading-relaxed text-stone">Mention that it is your first tattoo through Venue Ink and ask about placement, preparation, pacing and what the session will feel like.</p>
               </article>
             </div>
           </section>
@@ -216,7 +217,7 @@ export default function Home() {
                 </div>
                 <div className="border-t border-brass pt-5">
                   <h3 className="font-display text-2xl text-bone">Bring your ID</h3>
-                  <p className="mt-3 leading-relaxed text-stone">Bring your current government-issued photo ID. The site and request form are for clients age 18 and older.</p>
+                  <p className="mt-3 leading-relaxed text-stone">Bring your current government-issued photo ID. Tony’s booking link is for clients age 18 and older.</p>
                 </div>
                 <div className="border-t border-brass pt-5">
                   <h3 className="font-display text-2xl text-bone">Check the skin</h3>
@@ -288,10 +289,17 @@ export default function Home() {
             <p className="mt-5 text-sm text-stone">Amanda S. · client review published by Old Town Tatu</p>
           </section>
 
-          <BookingForm />
+          <section id="book" className="border-y border-stone/15 bg-char">
+            <div className="mx-auto max-w-4xl px-6 py-20 text-center sm:py-24">
+              <p className="text-xs tracking-[0.14em] text-brass">OFFICIAL BOOKING</p>
+              <h2 className="mt-4 font-display text-4xl font-light text-bone sm:text-5xl">Book with Tony on Venue Ink</h2>
+              <p className="mx-auto mt-5 max-w-2xl leading-relaxed text-stone">Use Tony’s official Venue Ink page for his actual booking process and appointment details.</p>
+              <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="mt-8 inline-flex bg-brass px-7 py-3.5 text-ink hover:bg-bone focus:outline-none focus-visible:ring-2 focus-visible:ring-bone">Open Venue Ink booking</a>
+            </div>
+          </section>
 
           <section id="faq" className="mx-auto max-w-4xl px-6 py-20 sm:py-24" aria-labelledby="faq-title">
-            <SectionHeading id="faq-title" intro="The practical questions people usually want answered before they send a request.">Frequently asked</SectionHeading>
+            <SectionHeading id="faq-title" intro="The practical questions people usually want answered before booking.">Frequently asked</SectionHeading>
             <div className="mt-9 border-y border-stone/20">
               {FAQS.map((item) => (
                 <details key={item.question} className="group border-b border-stone/15 last:border-b-0">
